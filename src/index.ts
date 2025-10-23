@@ -3,22 +3,12 @@ import indexHtml from "./index.html";
 
 const server = serve({
   routes: {
-    "/": {
-      async GET(req) {
+    "/api/initial-data": {
+      GET(req) {
         const batteryHeader = req.headers.get("x-battery");
         const battery = batteryHeader ? parseInt(batteryHeader, 10) : null;
 
-        const htmlText = await indexHtml.text();
-        const modifiedHtml = htmlText.replace(
-          "</head>",
-          `<script>window.__INITIAL_DATA__ = ${JSON.stringify({
-            battery,
-          })};</script></head>`
-        );
-
-        return new Response(modifiedHtml, {
-          headers: { "Content-Type": "text/html" },
-        });
+        return Response.json({ battery });
       },
     },
 

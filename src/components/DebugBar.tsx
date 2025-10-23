@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react";
 
-declare global {
-  interface Window {
-    __INITIAL_DATA__?: {
-      battery: number | null;
-    };
-  }
-}
-
 export function DebugBar() {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [battery] = useState<number | null>(
-    typeof window !== "undefined" && window.__INITIAL_DATA__?.battery !== undefined
-      ? window.__INITIAL_DATA__.battery
-      : null
-  );
+  const [battery, setBattery] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/initial-data")
+      .then((res) => res.json())
+      .then((data) => setBattery(data.battery))
+      .catch((err) => console.error("Failed to fetch initial data:", err));
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
