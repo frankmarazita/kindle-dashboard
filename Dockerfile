@@ -34,6 +34,8 @@ COPY --from=prerelease /usr/src/app/build.ts .
 COPY --from=prerelease /usr/src/app/src src
 COPY --from=prerelease /usr/src/app/package.json .
 
+RUN bun run build
+
 # run the app
 USER bun
 ENTRYPOINT [ "bun", "run", "src/index.ts" ]
