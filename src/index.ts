@@ -3,6 +3,14 @@ import { ObsidianApi } from "@frankmarazita/node-obsidian-local-rest-api";
 import { ENV } from "./env";
 import indexHtml from "./index.html";
 
+import * as Sentry from "@sentry/bun";
+
+Sentry.init({
+  environment: ENV.ENVIRONMENT,
+  dsn: ENV.SENTRY_DSN,
+  tracesSampleRate: 1.0,
+});
+
 const obsidianApi = new ObsidianApi({
   host: ENV.OBSIDIAN_HOST,
   port: ENV.OBSIDIAN_PORT,
