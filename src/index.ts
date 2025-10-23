@@ -12,6 +12,54 @@ const server = serve({
       },
     },
 
+    "/api/hackernews": {
+      async GET() {
+        try {
+          const bestStoriesResponse = await fetch(
+            "https://hacker-news.firebaseio.com/v0/beststories.json"
+          );
+
+          if (!bestStoriesResponse.ok) {
+            throw new Error("Failed to fetch best stories");
+          }
+
+          const bestStoryIds = (await bestStoriesResponse.json()) as number[];
+
+          const last24Hours = Date.now() / 1000 - 24 * 60 * 60;
+
+          const storyPromises = bestStoryIds.slice(0, 50).map(async (id) => {
+            const response = await fetch(
+              `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+            );
+            return response.json();
+          });
+
+          const stories = await Promise.all(storyPromises);
+
+          const filteredAndSorted = stories
+            .filter((story) => story && story.time >= last24Hours && story.type === "story")
+            .sort((a, b) => (b.score || 0) - (a.score || 0))
+            .slice(0, 5);
+
+          const formattedStories = filteredAndSorted.map((story) => ({
+            title: story.title,
+            url: story.url,
+            points: story.score || 0,
+            author: story.by,
+            comments: story.descendants || 0,
+          }));
+
+          return Response.json(formattedStories);
+        } catch (error) {
+          console.error("HackerNews API error:", error);
+          return Response.json(
+            { error: "Failed to fetch HackerNews stories" },
+            { status: 500 }
+          );
+        }
+      },
+    },
+
     "/*": indexHtml,
 
     "/api/weather": {
