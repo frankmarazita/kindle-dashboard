@@ -98,42 +98,29 @@ export function RemindersWidget() {
             key={reminder.id}
             className="py-3 border-b border-neutral-100 last:border-b-0"
           >
-            <div className="flex items-start gap-3">
-              <div className="mt-1">
-                {reminder.completed ? (
-                  <div className="w-4 h-4 rounded border-2 border-neutral-300 bg-neutral-300 flex items-center justify-center">
-                    <span className="text-white text-xs">✓</span>
-                  </div>
-                ) : (
-                  <div className="w-4 h-4 rounded border-2 border-neutral-300" />
-                )}
-              </div>
-              <div className="flex-1 space-y-1">
-                <p
-                  className={`text-base leading-tight ${
-                    reminder.completed
-                      ? "text-neutral-400 line-through"
-                      : "text-black"
-                  }`}
-                >
-                  {reminder.text}
-                </p>
-                {reminder.dueDate && (
-                  <div className="flex gap-3 text-xs">
-                    {reminder.dueDate && (
-                      <span
-                        className={
-                          reminder.completed
-                            ? "text-neutral-400"
-                            : "text-neutral-500"
-                        }
-                      >
-                        {formatDueDate(reminder.dueDate)}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
+            <div className="space-y-1">
+              <p
+                className={`text-base leading-tight ${
+                  reminder.completed
+                    ? "text-neutral-400 line-through"
+                    : "text-black"
+                }`}
+              >
+                {reminder.text}
+              </p>
+              {reminder.dueDate && (
+                <div className="flex gap-3 text-xs">
+                  <span
+                    className={
+                      reminder.completed
+                        ? "text-neutral-400"
+                        : "text-neutral-500"
+                    }
+                  >
+                    {formatDueDate(reminder.dueDate)}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         ))}

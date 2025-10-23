@@ -21,12 +21,118 @@ const server = serve({
       },
     },
 
+    "/api/goals": {
+      async GET() {
+        try {
+          const content = await obsidianApi.file.read("Goals.md");
+
+          const lines = content.split("\n");
+          const goals: Array<{
+            id: string;
+            text: string;
+          }> = [];
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+
+            if (trimmed.startsWith("- ") && !trimmed.startsWith("**")) {
+              const text = trimmed.substring(2).trim();
+              if (text) {
+                goals.push({
+                  id: `goal-${goals.length}`,
+                  text,
+                });
+              }
+            }
+          }
+
+          return Response.json(goals);
+        } catch (error) {
+          console.error("Failed to fetch goals:", error);
+          return Response.json(
+            { error: "Failed to fetch goals" },
+            { status: 500 }
+          );
+        }
+      },
+    },
+
+    "/api/groceries": {
+      async GET() {
+        try {
+          const content = await obsidianApi.file.read("Groceries.md");
+
+          const lines = content.split("\n");
+          const groceries: Array<{
+            id: string;
+            text: string;
+          }> = [];
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+
+            if (trimmed.startsWith("- ") && !trimmed.startsWith("**")) {
+              const text = trimmed.substring(2).trim();
+              if (text) {
+                groceries.push({
+                  id: `grocery-${groceries.length}`,
+                  text,
+                });
+              }
+            }
+          }
+
+          return Response.json(groceries);
+        } catch (error) {
+          console.error("Failed to fetch groceries:", error);
+          return Response.json(
+            { error: "Failed to fetch groceries" },
+            { status: 500 }
+          );
+        }
+      },
+    },
+
+    "/api/chores": {
+      async GET() {
+        try {
+          const content = await obsidianApi.file.read("Chores.md");
+
+          const lines = content.split("\n");
+          const chores: Array<{
+            id: string;
+            text: string;
+          }> = [];
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+
+            if (trimmed.startsWith("- ")) {
+              const text = trimmed.substring(2).trim();
+              if (text) {
+                chores.push({
+                  id: `chore-${chores.length}`,
+                  text,
+                });
+              }
+            }
+          }
+
+          return Response.json(chores);
+        } catch (error) {
+          console.error("Failed to fetch chores:", error);
+          return Response.json(
+            { error: "Failed to fetch chores" },
+            { status: 500 }
+          );
+        }
+      },
+    },
+
     "/api/reminders": {
       async GET() {
         try {
-          const content = await obsidianApi.file.read(
-            ENV.OBSIDIAN_REMINDERS_FILE
-          );
+          const content = await obsidianApi.file.read("Reminders.md");
 
           const lines = content.split("\n");
           const reminders: Array<{

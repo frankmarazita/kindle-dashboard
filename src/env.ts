@@ -20,7 +20,6 @@ const zEnv = z.object({
     return parsed;
   }),
   OBSIDIAN_TOKEN: z.string().min(1),
-  OBSIDIAN_REMINDERS_FILE: z.string().default("Reminders.md"),
 });
 
 export const ENV = zEnv.parse(process.env);
