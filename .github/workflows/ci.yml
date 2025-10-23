@@ -14,8 +14,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup .npmrc file for GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.READ_PACKAGES }}" > .npmrc
+          echo "@${{ github.repository_owner }}:registry=https://npm.pkg.github.com" >> .npmrc
+
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
+        run: docker build . --file Dockerfile --tag ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest --secret id=npmrc,src=${{ github.workspace }}/.npmrc
 
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
