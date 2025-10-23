@@ -19,13 +19,19 @@ export function DebugBar() {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("en-AU", {
+  const formatDateTime = (date: Date) => {
+    const dateStr = date.toLocaleDateString("en-AU", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+    const timeStr = date.toLocaleTimeString("en-AU", {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
       hour12: false,
     });
+    return `${dateStr}, ${timeStr}`;
   };
 
   return (
@@ -37,7 +43,7 @@ export function DebugBar() {
           )}
         </div>
         <div>
-          {formatTime(currentTime)}
+          {formatDateTime(currentTime)}
         </div>
       </div>
     </div>

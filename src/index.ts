@@ -1,5 +1,14 @@
 import { serve } from "bun";
+import { ObsidianApi } from "@frankmarazita/node-obsidian-local-rest-api";
+import { ENV } from "./env";
 import indexHtml from "./index.html";
+
+const obsidianApi = new ObsidianApi({
+  host: ENV.OBSIDIAN_HOST,
+  port: ENV.OBSIDIAN_PORT,
+  token: ENV.OBSIDIAN_TOKEN,
+  https: ENV.OBSIDIAN_HTTPS,
+});
 
 const server = serve({
   routes: {
@@ -9,6 +18,60 @@ const server = serve({
         const battery = batteryHeader ? parseInt(batteryHeader, 10) : null;
 
         return Response.json({ battery });
+      },
+    },
+
+    "/api/reminders": {
+      async GET() {
+        try {
+          const content = await obsidianApi.file.read(
+            ENV.OBSIDIAN_REMINDERS_FILE
+          );
+
+          const lines = content.split("\n");
+          const reminders: Array<{
+            id: string;
+            text: string;
+            dueDate?: string;
+            completed?: boolean;
+          }> = [];
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+
+            if (trimmed.startsWith("- [ ]") || trimmed.startsWith("- [x]")) {
+              const isCompleted = trimmed.startsWith("- [x]");
+              const contentAfterCheckbox = trimmed.substring(6).trim();
+
+              const match = contentAfterCheckbox.match(
+                /^\[(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2})\]\s+(.+)$/
+              );
+
+              if (match) {
+                const [, dateTimeStr, text] = match;
+                if (!dateTimeStr || !text) continue;
+                const dueDate = new Date(
+                  dateTimeStr.replace(" ", "T") + ":00"
+                ).toISOString();
+
+                reminders.push({
+                  id: `reminder-${reminders.length}`,
+                  text: text.trim(),
+                  dueDate,
+                  completed: isCompleted,
+                });
+              }
+            }
+          }
+
+          return Response.json(reminders.slice(0, 10));
+        } catch (error) {
+          console.error("Failed to fetch reminders:", error);
+          return Response.json(
+            { error: "Failed to fetch reminders" },
+            { status: 500 }
+          );
+        }
       },
     },
 
@@ -37,7 +100,10 @@ const server = serve({
           const stories = await Promise.all(storyPromises);
 
           const filteredAndSorted = stories
-            .filter((story) => story && story.time >= last24Hours && story.type === "story")
+            .filter(
+              (story) =>
+                story && story.time >= last24Hours && story.type === "story"
+            )
             .sort((a, b) => (b.score || 0) - (a.score || 0))
             .slice(0, 5);
 

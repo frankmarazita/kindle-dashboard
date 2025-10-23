@@ -1,14 +1,20 @@
 import "./index.css";
 import { WeatherWidget } from "./components/WeatherWidget";
 import { HackerNewsWidget } from "./components/HackerNewsWidget";
+import { RemindersWidget } from "./components/RemindersWidget";
 import { DebugBar } from "./components/DebugBar";
 
 export function App() {
   return (
     <div className="min-h-screen bg-white p-6 pb-16">
-      <div className="flex flex-col gap-6 max-w-2xl mx-auto">
-        <WeatherWidget />
-        <HackerNewsWidget />
+      <div className="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="flex flex-col gap-6">
+          <WeatherWidget />
+          <RemindersWidget />
+        </div>
+        <div className="flex flex-col gap-6">
+          <HackerNewsWidget />
+        </div>
       </div>
       <DebugBar />
     </div>

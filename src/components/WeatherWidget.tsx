@@ -38,7 +38,7 @@ export function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-80 h-64">
+      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-full">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-neutral-200 rounded w-3/4"></div>
 
@@ -66,7 +66,7 @@ export function WeatherWidget() {
 
   if (error) {
     return (
-      <div className="bg-white border border-red-300 rounded-lg p-6 shadow w-80 h-64">
+      <div className="bg-white border border-red-300 rounded-lg p-6 shadow w-full">
         <h2 className="text-xl font-semibold text-red-600 mb-2">Weather</h2>
         <p className="text-red-500">Error: {error}</p>
       </div>
@@ -78,7 +78,7 @@ export function WeatherWidget() {
   }
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow hover:shadow-md transition-shadow w-80 h-64">
+    <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
       <h2 className="text-2xl font-semibold text-black mb-4">
         {weather.location}
       </h2>
