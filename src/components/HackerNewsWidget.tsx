@@ -6,6 +6,7 @@ interface HackerNewsStory {
   points: number;
   author: string;
   comments: number;
+  timeAgo: string;
 }
 
 export function HackerNewsWidget() {
@@ -86,6 +87,7 @@ export function HackerNewsWidget() {
                 <div className="flex gap-3 text-xs text-black">
                   <span>{story.points} points</span>
                   <span>by {story.author}</span>
+                  <span>{story.timeAgo}</span>
                   <span>{story.comments} comments</span>
                 </div>
               </div>

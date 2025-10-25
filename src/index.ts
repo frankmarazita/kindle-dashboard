@@ -227,13 +227,31 @@ const server = serve({
             .sort((a, b) => (b.score || 0) - (a.score || 0))
             .slice(0, 5);
 
-          const formattedStories = filteredAndSorted.map((story) => ({
-            title: story.title,
-            url: story.url,
-            points: story.score || 0,
-            author: story.by,
-            comments: story.descendants || 0,
-          }));
+          const now = Math.floor(Date.now() / 1000);
+
+          const formattedStories = filteredAndSorted.map((story) => {
+            const secondsAgo = now - story.time;
+            const hoursAgo = Math.floor(secondsAgo / 3600);
+            const minutesAgo = Math.floor(secondsAgo / 60);
+
+            let timeAgo: string;
+            if (hoursAgo >= 1) {
+              timeAgo = `${hoursAgo}h`;
+            } else if (minutesAgo >= 1) {
+              timeAgo = `${minutesAgo}m`;
+            } else {
+              timeAgo = "now";
+            }
+
+            return {
+              title: story.title,
+              url: story.url,
+              points: story.score || 0,
+              author: story.by,
+              comments: story.descendants || 0,
+              timeAgo,
+            };
+          });
 
           return Response.json(formattedStories);
         } catch (error) {

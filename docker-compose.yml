@@ -11,4 +11,6 @@ services:
       OBSIDIAN_HTTPS: ${OBSIDIAN_HTTPS}
       OBSIDIAN_PORT: ${OBSIDIAN_PORT}
       OBSIDIAN_TOKEN: ${OBSIDIAN_TOKEN}
+      PTV_DEV_ID: ${PTV_DEV_ID}
+      PTV_API_KEY: ${PTV_API_KEY}
     restart: on-failure:5
