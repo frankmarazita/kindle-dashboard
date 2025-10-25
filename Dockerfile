@@ -30,11 +30,9 @@ COPY . .
 # copy production dependencies and source code into final image
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/build.ts .
 COPY --from=prerelease /usr/src/app/src src
 COPY --from=prerelease /usr/src/app/package.json .
-
-RUN bun run build
+COPY --from=prerelease /usr/src/app/bunfig.toml .
 
 # run the app
 USER bun
