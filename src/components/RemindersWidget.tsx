@@ -54,7 +54,7 @@ export function RemindersWidget() {
 
   if (loading) {
     return (
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-full">
+      <div className="bg-white border border-black rounded-lg p-6 shadow w-full">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-neutral-200 rounded w-32"></div>
           <div className="space-y-3">
@@ -81,15 +81,15 @@ export function RemindersWidget() {
 
   if (reminders.length === 0) {
     return (
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-full">
+      <div className="bg-white border border-black rounded-lg p-6 shadow w-full">
         <h2 className="text-2xl font-semibold text-black mb-4">Reminders</h2>
-        <p className="text-neutral-500 text-sm">No reminders at the moment</p>
+        <p className="text-black text-sm">No reminders at the moment</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
+    <div className="bg-white border border-black rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
       <h2 className="text-2xl font-semibold text-black mb-4">Reminders</h2>
 
       <div className="space-y-1">

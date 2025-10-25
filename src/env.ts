@@ -20,6 +20,8 @@ const zEnv = z.object({
     return parsed;
   }),
   OBSIDIAN_TOKEN: z.string().min(1),
+  PTV_DEV_ID: z.string().min(1),
+  PTV_API_KEY: z.string().min(1),
 });
 
 export const ENV = zEnv.parse(process.env);

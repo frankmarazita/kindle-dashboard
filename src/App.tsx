@@ -5,6 +5,7 @@ import { RemindersWidget } from "./components/RemindersWidget";
 import { ChoresWidget } from "./components/ChoresWidget";
 import { GroceriesWidget } from "./components/GroceriesWidget";
 import { GoalsWidget } from "./components/GoalsWidget";
+import { PTVWidget } from "./components/PTVWidget";
 import { DebugBar } from "./components/DebugBar";
 
 export function App() {
@@ -13,6 +14,7 @@ export function App() {
       <div className="grid grid-cols-2 gap-6 max-w-5xl mx-auto">
         <div className="flex flex-col gap-6">
           <WeatherWidget />
+          <PTVWidget />
           <RemindersWidget />
           <GroceriesWidget />
         </div>

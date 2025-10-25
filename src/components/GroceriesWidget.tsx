@@ -32,7 +32,7 @@ export function GroceriesWidget() {
 
   if (loading) {
     return (
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-full">
+      <div className="bg-white border border-black rounded-lg p-6 shadow w-full">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-neutral-200 rounded w-32"></div>
           <div className="space-y-3">
@@ -56,15 +56,15 @@ export function GroceriesWidget() {
 
   if (groceries.length === 0) {
     return (
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-full">
+      <div className="bg-white border border-black rounded-lg p-6 shadow w-full">
         <h2 className="text-2xl font-semibold text-black mb-4">Groceries</h2>
-        <p className="text-neutral-500 text-sm">No groceries to buy</p>
+        <p className="text-black text-sm">No groceries to buy</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
+    <div className="bg-white border border-black rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
       <h2 className="text-2xl font-semibold text-black mb-4">Groceries</h2>
 
       <div className="space-y-1">
@@ -73,9 +73,7 @@ export function GroceriesWidget() {
             key={item.id}
             className="py-2 border-b border-neutral-100 last:border-b-0"
           >
-            <p className="text-base text-black leading-tight">
-              {item.text}
-            </p>
+            <p className="text-base text-black leading-tight">{item.text}</p>
           </div>
         ))}
       </div>

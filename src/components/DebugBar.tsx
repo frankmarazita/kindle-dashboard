@@ -35,16 +35,12 @@ export function DebugBar() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-300 px-4 py-2">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-black px-4 py-2">
       <div className="flex justify-between items-center text-sm text-black">
         <div className="flex gap-4">
-          {battery !== null && (
-            <span>Battery: {battery}%</span>
-          )}
+          {battery !== null && <span>Battery: {battery}%</span>}
         </div>
-        <div>
-          {formatDateTime(currentTime)}
-        </div>
+        <div>{formatDateTime(currentTime)}</div>
       </div>
     </div>
   );

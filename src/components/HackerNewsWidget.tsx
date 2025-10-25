@@ -35,7 +35,7 @@ export function HackerNewsWidget() {
 
   if (loading) {
     return (
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-full">
+      <div className="bg-white border border-black rounded-lg p-6 shadow w-full">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-neutral-200 rounded w-48"></div>
           <div className="space-y-3">
@@ -64,7 +64,7 @@ export function HackerNewsWidget() {
   }
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
+    <div className="bg-white border border-black rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
       <h2 className="text-2xl font-semibold text-black mb-4">
         HackerNews Top Stories
       </h2>
@@ -76,14 +76,14 @@ export function HackerNewsWidget() {
             className="py-3 border-b border-neutral-100 last:border-b-0"
           >
             <div className="flex items-start gap-3">
-              <span className="text-lg font-semibold text-neutral-400 min-w-6">
+              <span className="text-lg font-semibold text-black min-w-6">
                 {index + 1}.
               </span>
               <div className="flex-1 space-y-1">
                 <h3 className="text-base font-medium text-black leading-tight">
                   {story.title}
                 </h3>
-                <div className="flex gap-3 text-xs text-neutral-500">
+                <div className="flex gap-3 text-xs text-black">
                   <span>{story.points} points</span>
                   <span>by {story.author}</span>
                   <span>{story.comments} comments</span>

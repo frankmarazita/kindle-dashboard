@@ -38,7 +38,7 @@ export function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow w-full">
+      <div className="bg-white border border-black rounded-lg p-6 shadow w-full">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-neutral-200 rounded w-3/4"></div>
 
@@ -78,7 +78,7 @@ export function WeatherWidget() {
   }
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
+    <div className="bg-white border border-black rounded-lg p-6 shadow hover:shadow-md transition-shadow w-full">
       <h2 className="text-2xl font-semibold text-black mb-4">
         {weather.location}
       </h2>
@@ -88,18 +88,16 @@ export function WeatherWidget() {
           <div className="text-5xl font-bold text-black">
             {Math.round(weather.temperature)}°C
           </div>
-          <div className="text-xl text-neutral-600 mt-2">
-            {weather.condition}
-          </div>
+          <div className="text-xl text-black mt-2">{weather.condition}</div>
         </div>
 
         <div className="grid grid-cols-2 gap-4 pt-4 border-t border-neutral-200">
           <div>
-            <div className="text-sm text-neutral-500">Humidity</div>
+            <div className="text-sm text-black">Humidity</div>
             <div className="text-lg text-black">{weather.humidity}%</div>
           </div>
           <div>
-            <div className="text-sm text-neutral-500">Wind Speed</div>
+            <div className="text-sm text-black">Wind Speed</div>
             <div className="text-lg text-black">{weather.windSpeed} km/h</div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { serve } from "bun";
 import { ObsidianApi } from "@frankmarazita/node-obsidian-local-rest-api";
 import { ENV } from "./env";
 import indexHtml from "./index.html";
+import { PTVApi } from "./lib/ptv-api";
 
 import * as Sentry from "@sentry/bun";
 
@@ -16,6 +17,11 @@ const obsidianApi = new ObsidianApi({
   port: ENV.OBSIDIAN_PORT,
   token: ENV.OBSIDIAN_TOKEN,
   https: ENV.OBSIDIAN_HTTPS,
+});
+
+const ptvApi = new PTVApi({
+  devId: ENV.PTV_DEV_ID,
+  apiKey: ENV.PTV_API_KEY,
 });
 
 const server = serve({
@@ -234,6 +240,92 @@ const server = serve({
           console.error("HackerNews API error:", error);
           return Response.json(
             { error: "Failed to fetch HackerNews stories" },
+            { status: 500 }
+          );
+        }
+      },
+    },
+
+    "/api/ptv/departures": {
+      async GET() {
+        try {
+          const JEWEL_STOP_ID = 1103;
+          const BARKLY_SQUARE_STOP_ID = 2811;
+          const ROUTE_TYPE_TRAIN = 0;
+          const ROUTE_TYPE_TRAM = 1;
+          const TRAIN_DIRECTION_ID_CITY = 1;
+          const TRAM_DIRECTION_ID_CITY = 11;
+
+          const [trainDepartures, tramDepartures] = await Promise.all([
+            ptvApi.getDepartures(ROUTE_TYPE_TRAIN, JEWEL_STOP_ID, {
+              maxResults: 15,
+              directionId: TRAIN_DIRECTION_ID_CITY,
+            }),
+            ptvApi.getDepartures(ROUTE_TYPE_TRAM, BARKLY_SQUARE_STOP_ID, {
+              maxResults: 15,
+              directionId: TRAM_DIRECTION_ID_CITY,
+            }),
+          ]);
+
+          const now = new Date();
+
+          const trains = trainDepartures.departures
+            .filter((dep) => dep.direction_id === TRAIN_DIRECTION_ID_CITY)
+            .map((dep) => {
+              const scheduledTime = new Date(dep.scheduled_departure_utc);
+              const minutesUntil = Math.round(
+                (scheduledTime.getTime() - now.getTime()) / 60000
+              );
+
+              const dayOfWeek = scheduledTime.toLocaleDateString("en-AU", {
+                weekday: "short",
+                timeZone: "Australia/Melbourne",
+              });
+
+              return {
+                scheduledTime: scheduledTime.toLocaleTimeString("en-AU", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  timeZone: "Australia/Melbourne",
+                }),
+                dayOfWeek,
+                minutesUntil,
+              };
+            })
+            .filter((dep) => dep.minutesUntil >= 0)
+            .slice(0, 12);
+
+          const trams = tramDepartures.departures
+            .filter((dep) => dep.direction_id === TRAM_DIRECTION_ID_CITY)
+            .map((dep) => {
+              const scheduledTime = new Date(dep.scheduled_departure_utc);
+              const minutesUntil = Math.round(
+                (scheduledTime.getTime() - now.getTime()) / 60000
+              );
+
+              const dayOfWeek = scheduledTime.toLocaleDateString("en-AU", {
+                weekday: "short",
+                timeZone: "Australia/Melbourne",
+              });
+
+              return {
+                scheduledTime: scheduledTime.toLocaleTimeString("en-AU", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  timeZone: "Australia/Melbourne",
+                }),
+                dayOfWeek,
+                minutesUntil,
+              };
+            })
+            .filter((dep) => dep.minutesUntil >= 0)
+            .slice(0, 12);
+
+          return Response.json({ trains, trams });
+        } catch (error) {
+          console.error("PTV API error:", error);
+          return Response.json(
+            { error: "Failed to fetch PTV departures" },
             { status: 500 }
           );
         }
